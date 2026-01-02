@@ -12,7 +12,7 @@ import (
 	"github.com/johnroshan2255/auth-service/internal/service"
 	"github.com/johnroshan2255/auth-service/internal/transport/grpc"
 
-	authv1 "github.com/johnroshan2255/auth-service/proto/auth/v1"
+	authv1 "github.com/johnroshan2255/auth-service/internal/transport/grpc/auth/v1"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
 )
