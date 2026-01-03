@@ -1,3 +1,6 @@
+// Package grpc provides gRPC handlers for backend-to-backend communication.
+// This is used when the auth service needs to communicate with other backend services (e.g., core service).
+// For frontend communication, use the HTTP handlers in internal/transport/http.
 package grpc
 
 import (
@@ -16,20 +19,6 @@ func NewAuthHandler(s *service.AuthService) *AuthHandler {
 	return &AuthHandler{service: s}
 }
 
-func (h *AuthHandler) Login(ctx context.Context, req *authv1.LoginRequest) (*authv1.LoginResponse, error) {
-	token, user, err := h.service.Login(ctx, req.Email, req.Password)
-	if err != nil {
-		return nil, err
-	}
-
-	return &authv1.LoginResponse{
-		Token:    token,
-		UserId:   user.ID,
-		TenantId: user.TenantID,
-		Role:     user.Role,
-	}, nil
-}
-
 func (h *AuthHandler) ValidateToken(ctx context.Context, req *authv1.TokenRequest) (*authv1.TokenResponse, error) {
 	valid, user := h.service.ValidateToken(req.Token)
 	if !valid {
@@ -38,7 +27,7 @@ func (h *AuthHandler) ValidateToken(ctx context.Context, req *authv1.TokenReques
 
 	return &authv1.TokenResponse{
 		Valid:    true,
-		UserId:   user.ID,
+		UserId:   user.UUID,
 		TenantId: user.TenantID,
 		Role:     user.Role,
 	}, nil
